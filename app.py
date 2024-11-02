@@ -1,6 +1,6 @@
-# app.py
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -26,7 +26,7 @@ def preprocess_text(text):
     tokenizer.fit_on_texts([text])
     sequences = tokenizer.texts_to_sequences([text])
     padded = pad_sequences(sequences, maxlen=500, padding="post", truncating="post")
-    return padded, tokenizer.word_index
+    return np.array(padded), tokenizer.word_index
 
 # Função para criar e treinar um modelo de rede neural simples
 def create_and_train_model(padded_content):
@@ -37,7 +37,11 @@ def create_and_train_model(padded_content):
         tf.keras.layers.Dense(1, activation="sigmoid")
     ])
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
-    model.fit(padded_content, [1], epochs=10, verbose=1)  # Treina o modelo
+
+    # Treinamento do modelo se houver dados
+    if padded_content.shape[0] > 0:
+        labels = np.array([1])  # Rótulo fictício, modifique conforme necessário
+        model.fit(padded_content, labels, epochs=10, verbose=1)
     return model
 
 # Rota principal do site
