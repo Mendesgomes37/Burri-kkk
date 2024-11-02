@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Leitura e Aprendizado</title>
+</head>
+<body>
+    <h1>IA Leitura e Aprendizado</h1>
+    <form method="POST">
+        <label for="url">Digite a URL da página para a IA ler:</label><br>
+        <input type="text" id="url" name="url" placeholder="https://exemplo.com/artigo"><br><br>
+        <input type="submit" value="Enviar">
+    </form>
+
+    {% if content %}
+        <h2>Conteúdo Extraído:</h2>
+        <p>{{ content }}</p>
+        <h3>{{ message }}</h3>
+    {% endif %}
+</body>
+</html>
